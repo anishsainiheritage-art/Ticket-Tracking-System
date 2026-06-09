@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Help Desk & Ticket Management System</title>
+    
+    <!-- Meta tags for SEO & Security -->
+    <meta name="description" content="Submit your ERP support ticket or issue request. Efficient help desk ticket registration form.">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    
+    <!-- Google Fonts: Plus Jakarta Sans for headings, Outfit for UI/Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3.3 CSS with SRI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+          crossorigin="anonymous">
+          
+    <!-- Font Awesome 6.5.2 CSS with SRI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+          
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --primary-rgb: 37, 99, 235;
+            --accent-blue: #0ea5e9;
+            --accent-dark: #1e3a8a;
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --bg-color: #ffffff;
+            --body-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --card-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.02);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius-lg: 16px;
+            --border-radius-md: 10px;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Container & Page Header */
+        .page-wrapper {
+            padding: 3rem 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .portal-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .portal-badge {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .portal-title {
+            color: var(--accent-dark);
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .portal-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Form Card */
+        .form-card {
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            padding: 3rem;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-blue));
+        }
+
+        /* Section Headings */
+        .section-divider {
+            border-top: 1px solid var(--border-color);
+            margin: 2.5rem 0;
+            position: relative;
+        }
+
+        .section-title-badge {
+            background-color: var(--bg-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            padding: 0 1rem;
+            position: absolute;
+            top: 50%;
+            left: 1.5rem;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title-badge i {
+            color: var(--primary-color);
+        }
+
+        /* Form Controls styling */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .form-label i {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            width: 16px;
+            text-align: center;
+        }
+
+        .required-indicator {
+            color: var(--danger-color);
+            margin-left: 2px;
+        }
+
+        .form-control, .form-select {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 0.75rem 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+        }
+
+        .form-control[readonly], .form-control[readonly]:focus {
+            background-color: #f1f5f9;
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Select arrow styling */
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23475569' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-size: 12px 10px;
+        }
+
+        /* Custom Validation Feedback */
+        .invalid-feedback {
+            font-size: 0.825rem;
+            font-weight: 500;
+            color: var(--danger-color);
+            margin-top: 0.35rem;
+            display: none;
+            align-items: center;
+            gap: 0.3rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: flex;
+        }
+
+        .is-invalid {
+            border-color: var(--danger-color) !important;
+        }
+        .is-invalid:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12) !important;
+        }
+
+        /* Custom Drag & Drop Area */
+        .upload-container {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            background-color: var(--body-bg);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .upload-container:hover, .upload-container.drag-over {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .upload-icon {
+            font-size: 2.25rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            transition: var(--transition-smooth);
+        }
+
+        .upload-container:hover .upload-icon {
+            transform: translateY(-4px);
+        }
+
+        .upload-text {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .upload-subtext {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .file-preview-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 0.75rem 1rem;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            overflow: hidden;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .file-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        .file-size {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-remove-file {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            padding: 0.25rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove-file:hover {
+            color: var(--danger-color);
+            background-color: rgba(239, 68, 68, 0.08);
+        }
+
+        /* Submit Button & Animations */
+        .submit-btn-wrapper {
+            margin-top: 2rem;
+        }
+
+        .btn-submit {
+            background: var(--btn-gradient);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            letter-spacing: 0.02rem;
+            padding: 0.9rem 2.2rem;
+            border: none;
+            border-radius: var(--border-radius-md);
+            box-shadow: 0 10px 20px -6px rgba(37, 99, 235, 0.3);
+            width: 100%;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -5px rgba(37, 99, 235, 0.45);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 12px -4px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Loading Spinner Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1060;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .custom-spinner {
+            width: 55px;
+            height: 55px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);
+        }
+
+        .loading-text {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent-dark);
+            letter-spacing: -0.01em;
+        }
+
+        /* Success Dialog / Modal */
+        .modal-content {
+            border: none;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+            overflow: hidden;
+        }
+
+        .modal-header-success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            text-align: center;
+            border: none;
+            position: relative;
+        }
+
+        .success-icon-container {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            animation: pulseCheck 2s infinite;
+        }
+
+        .success-icon-container i {
+            font-size: 2.2rem;
+            color: white;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+
+        .modal-success-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .modal-body {
+            padding: 2.2rem;
+        }
+
+        .ticket-receipt-card {
+            background-color: var(--body-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .receipt-row:first-child {
+            padding-top: 0;
+        }
+
+        .receipt-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03rem;
+        }
+
+        .receipt-val {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        .receipt-val.badge {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        .btn-modal-close {
+            background-color: #f1f5f9;
+            color: var(--text-secondary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-md);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-modal-close:hover {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .btn-modal-action {
+            background: var(--btn-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.8rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-md);
+            box-shadow: 0 6px 12px -3px rgba(37, 99, 235, 0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-modal-action:hover {
+            box-shadow: 0 8px 16px -2px rgba(37, 99, 235, 0.35);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        }
+
+        /* Footer styling */
+        .portal-footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 450;
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulseCheck {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        /* Priority Colors */
+        .priority-badge-low { background-color: #e0f2fe; color: #0369a1; }
+        .priority-badge-medium { background-color: #fef3c7; color: #b45309; }
+        .priority-badge-high { background-color: #ffedd5; color: #c2410c; }
+        .priority-badge-critical { background-color: #fee2e2; color: #b91c1c; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 1.5rem 0.5rem;
+            }
+            .form-card {
+                padding: 1.75rem;
+            }
+            .portal-title {
+                font-size: 1.75rem;
+            }
+            .btn-submit {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="page-wrapper" id="main-content">
+        <!-- Back to Dashboard Link -->
+        <div class="mb-4 text-start">
+            <a href="ticket_list.html" class="btn btn-sm btn-outline-secondary" style="font-weight: 600; border-radius: var(--border-radius-md); padding: 0.5rem 1rem;">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Portal Header -->
+        <header class="portal-header">
+            <div class="portal-badge" id="header-badge">
+                <i class="fas fa-ticket-alt"></i> Help Desk System
+            </div>
+            <h1 class="portal-title">ERP Help Desk & Ticket Management System</h1>
+            <p class="portal-subtitle">Submit your issue or support request</p>
+        </header>
+
+        <!-- Ticket Form Container -->
+        <div class="form-card" id="form-container">
+            <form id="ticketForm" method="post" enctype="multipart/form-data" novalidate>
+                <!-- Django CSRF Token (Commented out for static preview, will be read by Django engine when integrated) -->
+                {% csrf_token %}
+                
+                <!-- SECTION 1: Ticket Metadata -->
+                <div class="row">
+                    <!-- Ticket Number -->
+                    <div class="col-md-6 form-group">
+                        <label for="ticket_number" class="form-label">
+    <i class="fas fa-hashtag"></i> Ticket Number
+</label>
+<input type="text" class="form-control" id="ticket_number" value="TKT-20260604-001" readonly tabindex="-1" aria-readonly="true">
+                    </div>
+                    
+                    <!-- Date & Time -->
+                    <div class="col-md-6 form-group">
+                        <label for="date_time" class="form-label">
+                            <i class="far fa-calendar-alt"></i> Date & Time
+                        </label>
+                        <input type="text" class="form-control" id="date_time" name="date_time" 
+                               readonly tabindex="-1" aria-readonly="true">
+                    </div>
+                </div>
+
+                <div class="section-divider">
+                    <span class="section-title-badge">
+                        <i class="fas fa-user-tie"></i> Contact Information
+                    </span>
+                </div>
+
+                <!-- SECTION 2: Requester Information -->
+                <div class="row">
+                    <!-- Full Name -->
+                    <div class="col-md-6 form-group">
+                        <label for="full_name" class="form-label">
+                            <i class="fas fa-user"></i> Full Name <span class="required-indicator" aria-hidden="true">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" 
+                               placeholder="e.g., John Doe" required maxlength="100">
+                        <div class="invalid-feedback" id="fullname-feedback">
+                            <i class="fas fa-exclamation-circle"></i> Please enter your full name.
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Number -->
+                    <div class="col-md-6 form-group">
+                        <label for="mobile_number" class="form-label">
+                            <i class="fas fa-phone-alt"></i> Mobile Number <span class="required-indicator" aria-hidden="true">*</span>
+                        </label>
+                        <input type="tel" class="form-control" id="mobile_number" name="mobile_number" 
+                               placeholder="e.g., 9876543210" required>
+                        <div class="invalid-feedback" id="mobile-feedback">
+                            <i class="fas fa-exclamation-circle"></i> Please enter a valid 10-digit mobile number.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Email Address -->
+                    <div class="col-md-6 form-group">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                               placeholder="e.g., john.doe@company.com" maxlength="100">
+                        <div class="invalid-feedback" id="email-feedback">
+                            <i class="fas fa-exclamation-circle"></i> Please enter a valid email address.
+                        </div>
+                    </div>
+
+                    <!-- Department -->
+                    <div class="col-md-6 form-group">
+                        <label for="department" class="form-label">
+                            <i class="fas fa-building"></i> Department
+                        </label>
+                        <select class="form-select" id="department" name="department">
+                            <option value="Purchase">Purchase</option>
+                            <option value="Inventory">Inventory</option>
+                            <option value="Production">Production</option>
+                            <option value="PPC">PPC</option>
+                            <option value="Accounts">Accounts</option>
+                            <option value="HR">HR</option>
+                            <option value="IT">IT</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-divider">
+                    <span class="section-title-badge">
+                        <i class="fas fa-clipboard-list"></i> Ticket Specifications
+                    </span>
+                </div>
+
+                <!-- SECTION 3: Issue Specs -->
+                <div class="row">
+                    <!-- Issue Type -->
+                    <div class="col-md-6 form-group">
+                        <label for="issue_type" class="form-label">
+                            <i class="fas fa-bug"></i> Issue Type
+                        </label>
+                        <select class="form-select" id="issue_type" name="issue_type">
+                            <option value="ERP Issue">ERP Issue</option>
+                            <option value="BOM Issue">BOM Issue</option>
+                            <option value="Purchase Issue">Purchase Issue</option>
+                            <option value="Inventory Issue">Inventory Issue</option>
+                            <option value="Production Issue">Production Issue</option>
+                            <option value="Network Issue">Network Issue</option>
+                            <option value="Hardware Issue">Hardware Issue</option>
+                            <option value="Software Issue">Software Issue</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Priority -->
+                    <div class="col-md-6 form-group">
+                        <label for="priority" class="form-label">
+                            <i class="fas fa-exclamation-triangle"></i> Priority
+                        </label>
+                        <select class="form-select" id="priority" name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Subject -->
+                    <div class="col-12 form-group">
+                        <label for="subject" class="form-label">
+                            <i class="fas fa-heading"></i> Subject <span class="required-indicator" aria-hidden="true">*</span>
+                        </label>
+                        <input type="text" class="form-control" id="subject" name="subject" 
+                               placeholder="Brief summary of the problem" required maxlength="150">
+                        <div class="invalid-feedback" id="subject-feedback">
+                            <i class="fas fa-exclamation-circle"></i> Please enter a subject.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Detailed Description -->
+                    <div class="col-12 form-group">
+                        <label for="description" class="form-label">
+                            <i class="fas fa-align-left"></i> Detailed Description <span class="required-indicator" aria-hidden="true">*</span>
+                        </label>
+                        <textarea class="form-control" id="description" name="description" rows="5" 
+                                  placeholder="Please provide steps to reproduce the issue, error codes, and details..." required></textarea>
+                        <div class="invalid-feedback" id="description-feedback">
+                            <i class="fas fa-exclamation-circle"></i> Please enter a detailed description of the issue.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: File Upload -->
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <label class="form-label">
+                            <i class="fas fa-paperclip"></i> Attachment Upload
+                        </label>
+                        
+                        <!-- Drag & Drop Container -->
+                        <div class="upload-container" id="dropzone" role="button" tabindex="0" aria-label="Upload files by dragging and dropping here or clicking to browse">
+                            <input type="file" id="file_attachment" name="attachment" class="d-none" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.xls,.xlsx,.zip">
+                            <div class="upload-icon" id="dropzone-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <p class="upload-text">Drag & drop files here or click to browse</p>
+                            <p class="upload-subtext">Supported formats: JPG, PNG, PDF, Word, Excel, ZIP (Max 5MB)</p>
+                        </div>
+                        
+                        <!-- Selected File Preview -->
+                        <div class="file-preview-card" id="filePreview">
+                            <div class="file-info">
+                                <div class="file-icon" id="fileIcon">
+                                    <i class="far fa-file"></i>
+                                </div>
+                                <div>
+                                    <div class="file-name" id="fileName">document.pdf</div>
+                                    <div class="file-size" id="fileSize">145 KB</div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-remove-file" id="btnRemoveFile" title="Remove attachment" aria-label="Remove attachment">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="invalid-feedback" id="file-feedback">
+                            <i class="fas fa-exclamation-circle"></i> File size exceeds the maximum limit of 5MB.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="submit-btn-wrapper">
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> Submit Support Ticket
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="portal-footer" id="portal-footer">
+            <p>&copy; 2026 Enterprise Resource Planning. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <!-- Fullscreen Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" aria-hidden="true" role="status">
+        <div class="custom-spinner"></div>
+        <div class="loading-text">Registering support ticket...</div>
+    </div>
+
+    <!-- Success Confirmation Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header-success">
+                    <div class="success-icon-container">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="modal-success-title" id="successModalLabel">Ticket Registered Successfully!</h2>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center text-muted mb-4">Your support request has been logged. Our technical support team will contact you shortly.</p>
+                    
+                    <div class="ticket-receipt-card">
+                        <div class="receipt-row">
+                            <span class="receipt-label">Ticket Number</span>
+                            <span class="receipt-val fw-bold text-primary" id="rec-ticket-num"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Submitted By</span>
+                            <span class="receipt-val" id="rec-name"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Department</span>
+                            <span class="receipt-val" id="rec-dept"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Priority</span>
+                            <span class="receipt-val" id="rec-priority"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Subject</span>
+                            <span class="receipt-val text-truncate" id="rec-subject"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span class="receipt-label">Created At</span>
+                            <span class="receipt-val" id="rec-date"></span>
+                        </div>
+                        <div class="receipt-row" id="rec-attachment-row" style="display: none;">
+                            <span class="receipt-label">Attachment</span>
+                            <span class="receipt-val text-truncate" id="rec-attachment"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2 justify-content-end">
+                        <button type="button" class="btn-modal-close" data-bs-dismiss="modal" id="btnModalClose">Close</button>
+                        <button type="button" class="btn-modal-action" id="btnRegisterNew">Register New Ticket</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3.3 Bundle JS with SRI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+            crossorigin="anonymous"></script>
+
+    <!-- Application Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const form = document.getElementById('ticketForm');
+            const ticketNumInput = document.getElementById('ticket_number');
+            const dateTimeInput = document.getElementById('date_time');
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('file_attachment');
+            const filePreview = document.getElementById('filePreview');
+            const fileNameSpan = document.getElementById('fileName');
+            const fileSizeSpan = document.getElementById('fileSize');
+            const btnRemoveFile = document.getElementById('btnRemoveFile');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const btnRegisterNew = document.getElementById('btnRegisterNew');
+            const successModalEl = document.getElementById('successModal');
+            
+            // Bootstrap Modal Instance
+            const successModal = new bootstrap.Modal(successModalEl);
+
+            // Validation variables
+            const mobileInput = document.getElementById('mobile_number');
+            const fullNameInput = document.getElementById('full_name');
+            const emailInput = document.getElementById('email');
+            const subjectInput = document.getElementById('subject');
+            const descriptionInput = document.getElementById('description');
+            
+            // Helper for padding double-digits
+            const pad = (num) => String(num).padStart(2, '0');
+
+            // 1. Generate Dynamic Ticket Number
+            const generateTicketNumber = () => {
+                const now = new Date();
+                const todayStr = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+                const randomNum = pad(Math.floor(Math.random() * 1000));
+                ticketNumInput.value = `TKT-${todayStr}-${randomNum}`;
+            };
+
+            // 2. Autofill Date & Time
+            const updateDateTime = () => {
+                const now = new Date();
+                const formattedDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+                dateTimeInput.value = formattedDate;
+            };
+
+            // Initialize fields
+            generateTicketNumber();
+            updateDateTime();
+            // Update time every second to keep it current
+            const timeInterval = setInterval(updateDateTime, 1000);
+
+            // 3. Drag & Drop File Upload Implementation
+            
+            // Trigger file selection on clicking dropzone
+            dropzone.addEventListener('click', () => fileInput.click());
+            
+            // Keyboard accessibility for dropzone
+            dropzone.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    fileInput.click();
+                }
+            });
+
+            // Drag Events
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.add('drag-over');
+                }, false);
+            });
+
+            ['dragleave', 'dragend', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropzone.classList.remove('drag-over');
+                }, false);
+            });
+
+            // Handle Drop
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    handleFileSelection(files[0]);
+                }
+            }, false);
+
+            // File input change
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    handleFileSelection(fileInput.files[0]);
+                }
+            });
+
+            // Handle file selection and validation (Size < 5MB)
+            const handleFileSelection = (file) => {
+                const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+                const fileFeedback = document.getElementById('file-feedback');
+                
+                if (file.size > maxSize) {
+                    fileInput.value = ''; // Reset input
+                    fileFeedback.style.display = 'flex';
+                    filePreview.style.display = 'none';
+                    return;
+                }
+                
+                fileFeedback.style.display = 'none';
+                
+                // Set text securely using textContent (Vanilla DOM secure guidelines)
+                fileNameSpan.textContent = file.name;
+                
+                // Format size
+                const sizeKB = file.size / 1024;
+                if (sizeKB > 1024) {
+                    fileSizeSpan.textContent = `${(sizeKB / 1024).toFixed(2)} MB`;
+                } else {
+                    fileSizeSpan.textContent = `${sizeKB.toFixed(1)} KB`;
+                }
+
+                // Determine file icon based on extension
+                const ext = file.name.split('.').pop().toLowerCase();
+                const iconElement = document.getElementById('fileIcon');
+                iconElement.replaceChildren(); // Safely clear icon elements
+                
+                const icon = document.createElement('i');
+                if (['jpg', 'jpeg', 'png'].includes(ext)) {
+                    icon.className = 'far fa-file-image';
+                } else if (ext === 'pdf') {
+                    icon.className = 'far fa-file-pdf';
+                } else if (['doc', 'docx'].includes(ext)) {
+                    icon.className = 'far fa-file-word';
+                } else if (['xls', 'xlsx'].includes(ext)) {
+                    icon.className = 'far fa-file-excel';
+                } else if (ext === 'zip') {
+                    icon.className = 'far fa-file-archive';
+                } else {
+                    icon.className = 'far fa-file-alt';
+                }
+                iconElement.appendChild(icon);
+
+                // Show preview
+                filePreview.style.display = 'flex';
+                
+                // Update file input files if dropped
+                const container = new DataTransfer();
+                container.items.add(file);
+                fileInput.files = container.files;
+            };
+
+            // Remove File Click Handler
+            btnRemoveFile.addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.value = '';
+                filePreview.style.display = 'none';
+                document.getElementById('file-feedback').style.display = 'none';
+            });
+
+            // 4. Form Validation & Submission
+            
+            // Real-time validations
+            const validateFullName = () => {
+                const isValid = fullNameInput.value.trim().length > 0;
+                toggleValidationState(fullNameInput, isValid);
+                return isValid;
+            };
+
+            const validateMobileNumber = () => {
+                const val = mobileInput.value.trim();
+                // Validates standard 10 digit numbers (supports optional + prefix or country code spacing/hyphen)
+                // e.g. 9876543210, +91 9876543210, +1-9876543210
+                const mobileRegex = /^(\+?\d{1,3}[- ]?)?\d{10}$/;
+                const isValid = mobileRegex.test(val);
+                toggleValidationState(mobileInput, isValid);
+                return isValid;
+            };
+
+            const validateEmail = () => {
+                const val = emailInput.value.trim();
+                if (val === '') {
+                    toggleValidationState(emailInput, true); // Email is optional
+                    return true;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = emailRegex.test(val);
+                toggleValidationState(emailInput, isValid);
+                return isValid;
+            };
+
+            const validateSubject = () => {
+                const isValid = subjectInput.value.trim().length > 0;
+                toggleValidationState(subjectInput, isValid);
+                return isValid;
+            };
+
+            const validateDescription = () => {
+                const isValid = descriptionInput.value.trim().length >= 10;
+                toggleValidationState(descriptionInput, isValid);
+                return isValid;
+            };
+
+            const toggleValidationState = (element, isValid) => {
+                if (isValid) {
+                    element.classList.remove('is-invalid');
+                } else {
+                    element.classList.add('is-invalid');
+                }
+            };
+
+            // Input Event Listeners for Live Validation feedback
+            fullNameInput.addEventListener('input', validateFullName);
+            mobileInput.addEventListener('input', validateMobileNumber);
+            emailInput.addEventListener('input', validateEmail);
+            subjectInput.addEventListener('input', validateSubject);
+            descriptionInput.addEventListener('input', validateDescription);
+
+            // Form Submit Listener
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Run validations
+                const isNameValid = validateFullName();
+                const isMobileValid = validateMobileNumber();
+                const isEmailValid = validateEmail();
+                const isSubjectValid = validateSubject();
+                const isDescValid = validateDescription();
+
+                const isFormValid = isNameValid && isMobileValid && isEmailValid && isSubjectValid && isDescValid;
+
+                if (!isFormValid) {
+                    // Focus on the first invalid element
+                    const firstInvalid = form.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                    }
+                    return;
+                }
+
+                // If Valid, show loading screen and process ticket
+                clearInterval(timeInterval); // Stop updating clock since submission is frozen at current date-time
+                
+                loadingOverlay.style.display = 'flex';
+                loadingOverlay.setAttribute('aria-hidden', 'false');
+
+                // Simulate Server submission (2 seconds delay)
+                setTimeout(() => {
+                    loadingOverlay.style.display = 'none';
+                    loadingOverlay.setAttribute('aria-hidden', 'true');
+
+                    // Extract values and fill receipt modal securely using textContent
+                    document.getElementById('rec-ticket-num').textContent = ticketNumInput.value;
+                    document.getElementById('rec-name').textContent = fullNameInput.value;
+                    document.getElementById('rec-dept').textContent = document.getElementById('department').value;
+                    document.getElementById('rec-date').textContent = dateTimeInput.value;
+                    document.getElementById('rec-subject').textContent = subjectInput.value;
+                    
+                    // Priority Badge styling and text
+                    const priorityVal = document.getElementById('priority').value;
+                    const priorityRec = document.getElementById('rec-priority');
+                    priorityRec.textContent = priorityVal;
+                    priorityRec.className = 'receipt-val badge';
+                    priorityRec.classList.add(`priority-badge-${priorityVal.toLowerCase()}`);
+
+                    // File Attachment Receipt
+                    const attachmentRow = document.getElementById('rec-attachment-row');
+                    const attachmentVal = document.getElementById('rec-attachment');
+                    if (fileInput.files.length > 0) {
+                        attachmentVal.textContent = fileInput.files[0].name;
+                        attachmentRow.style.display = 'flex';
+                    } else {
+                        attachmentRow.style.display = 'none';
+                    }
+
+                    // Show success modal
+                    successModal.show();
+                }, 2000);
+            });
+
+            // 5. Register New Ticket Event (Reset form and states)
+            btnRegisterNew.addEventListener('click', () => {
+                successModal.hide();
+                form.reset();
+                
+                // Clear validation classes
+                const inputs = form.querySelectorAll('.form-control, .form-select');
+                inputs.forEach(input => input.classList.remove('is-invalid'));
+                
+                // Clear File Preview
+                filePreview.style.display = 'none';
+                document.getElementById('file-feedback').style.display = 'none';
+                
+                // Reinitialize time/ticket counters
+                generateTicketNumber();
+                updateDateTime();
+                
+                // Restart timer
+                setInterval(updateDateTime, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

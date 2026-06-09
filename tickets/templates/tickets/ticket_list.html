@@ -1,0 +1,1920 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Management Dashboard</title>
+
+    <!-- Meta tags for SEO & Security -->
+    <meta name="description"
+        content="Manage, track, and monitor help desk support tickets. High-performance corporate admin dashboard.">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+
+    <!-- Google Fonts: Plus Jakarta Sans for headings, Outfit for UI/Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5.3.3 CSS with SRI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Font Awesome 6.5.2 CSS with SRI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --primary-rgb: 37, 99, 235;
+            --accent-blue: #0ea5e9;
+            --accent-dark: #1e3a8a;
+            --text-main: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --bg-color: #ffffff;
+            --body-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+
+            --success-color: #10b981;
+            --success-light: #ecfdf5;
+            --danger-color: #ef4444;
+            --danger-light: #fef2f2;
+            --warning-color: #f59e0b;
+            --warning-light: #fffbeb;
+            --info-color: #3b82f6;
+            --info-light: #eff6ff;
+            --dark-color: #64748b;
+            --dark-light: #f8fafc;
+
+            --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius-lg: 16px;
+            --border-radius-md: 10px;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Container & Page Header */
+        .dashboard-container {
+            padding: 2.5rem 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .portal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .portal-title {
+            color: var(--accent-dark);
+            font-size: 2.1rem;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.03em;
+        }
+
+        .portal-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-header-action {
+            background-color: var(--bg-color);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-md);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-header-action:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+
+        .btn-header-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-header-primary:hover {
+            color: white;
+            background: linear-gradient(135deg, var(--primary-hover) 0%, #1e40af 100%);
+            transform: translateY(-1px);
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .summary-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -10px rgba(15, 23, 42, 0.08);
+            border-color: var(--border-hover);
+        }
+
+        .summary-info {
+            z-index: 2;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-value {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .summary-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            z-index: 2;
+        }
+
+        /* Colors for icons and card top accents */
+        .card-total {
+            border-top: 4px solid var(--info-color);
+        }
+
+        .card-total .summary-icon-box {
+            background-color: var(--info-light);
+            color: var(--info-color);
+        }
+
+        .card-open {
+            border-top: 4px solid var(--warning-color);
+        }
+
+        .card-open .summary-icon-box {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+        }
+
+        .card-assigned {
+            border-top: 4px solid #8b5cf6;
+        }
+
+        .card-assigned .summary-icon-box {
+            background-color: #f5f3ff;
+            color: #8b5cf6;
+        }
+
+        .card-inprogress {
+            border-top: 4px solid #f97316;
+        }
+
+        .card-inprogress .summary-icon-box {
+            background-color: #fff7ed;
+            color: #f97316;
+        }
+
+        .card-resolved {
+            border-top: 4px solid var(--success-color);
+        }
+
+        .card-resolved .summary-icon-box {
+            background-color: var(--success-light);
+            color: var(--success-color);
+        }
+
+        .card-closed {
+            border-top: 4px solid var(--dark-color);
+        }
+
+        .card-closed .summary-icon-box {
+            background-color: var(--dark-light);
+            color: var(--dark-color);
+        }
+
+        /* Dashboard Main Layout */
+        .dashboard-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        /* Filter Section */
+        .card-filter {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 1.8rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0;
+        }
+
+        .filter-title i {
+            color: var(--primary-color);
+        }
+
+        .filter-toggle-icon {
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .collapsed .filter-toggle-icon {
+            transform: rotate(-180deg);
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control,
+        .form-select {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 0.6rem 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .btn-filter-search {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-md);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .btn-filter-search:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-filter-reset {
+            background-color: #f1f5f9;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-md);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .btn-filter-reset:hover {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        /* Ticket Table */
+        .card-table-container {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--card-shadow);
+            padding: 1.8rem;
+            position: relative;
+        }
+
+        .table-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .table-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .table-search-box {
+            position: relative;
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .table-search-box input {
+            padding-left: 2.2rem;
+            width: 100%;
+        }
+
+        .table-search-box i {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .table-responsive {
+            border-radius: var(--border-radius-md);
+            overflow-x: auto;
+            overflow-y: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .table {
+            margin-bottom: 0;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            white-space: nowrap;
+        }
+
+        .table th {
+            background-color: #f8fafc;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03rem;
+            padding: 1rem 0.85rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            user-select: none;
+        }
+
+        .table th.sortable {
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .table th.sortable:hover {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+        }
+
+        .table th.sortable i {
+            margin-left: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .table th.sortable.sorted-asc i,
+        .table th.sortable.sorted-desc i {
+            color: var(--primary-color);
+        }
+
+        .table td {
+            padding: 1rem 0.85rem;
+            font-size: 0.925rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: var(--transition-smooth);
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .status-badge-open {
+            background-color: var(--warning-light);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .status-badge-assigned {
+            background-color: #f5f3ff;
+            color: #8b5cf6;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+        }
+
+        .status-badge-in-progress {
+            background-color: #fff7ed;
+            color: #f97316;
+            border: 1px solid rgba(249, 115, 22, 0.25);
+        }
+
+        .status-badge-resolved {
+            background-color: var(--success-light);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .status-badge-closed {
+            background-color: var(--dark-light);
+            color: var(--dark-color);
+            border: 1px solid rgba(100, 116, 139, 0.25);
+        }
+
+        /* Priority Badges */
+        .priority-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.55rem;
+            border-radius: 4px;
+        }
+
+        .priority-badge-low {
+            background-color: #f0fdf4;
+            color: #166534;
+        }
+
+        .priority-badge-medium {
+            background-color: #fef8e7;
+            color: #b45309;
+        }
+
+        .priority-badge-high {
+            background-color: #fff7ed;
+            color: #c2410c;
+        }
+
+        .priority-badge-critical {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+            padding: 0;
+        }
+
+        /* Pagination */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .pagination {
+            margin: 0;
+            gap: 0.25rem;
+        }
+
+        .page-link {
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--border-radius-md) !important;
+            transition: var(--transition-smooth);
+            font-weight: 500;
+        }
+
+        .page-link:hover {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .page-item.disabled .page-link {
+            color: var(--text-muted);
+            pointer-events: none;
+            background-color: #f8fafc;
+            border-color: var(--border-color);
+        }
+
+        /* Modals styling */
+        .modal-content {
+            border: none;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            background-color: #f8fafc;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .btn-close:focus {
+            box-shadow: none;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            background-color: #f8fafc;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .detail-full-width {
+            grid-column: span 2;
+        }
+
+        .desc-box {
+            background-color: var(--dark-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1rem;
+            font-size: 0.925rem;
+            line-height: 1.5;
+            max-height: 180px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: var(--text-secondary);
+        }
+
+        .attachment-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--primary-light);
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            border-radius: var(--border-radius-md);
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .attachment-box i {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .attachment-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            text-decoration: none;
+        }
+
+        .attachment-name:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer styling */
+        .portal-footer {
+            text-align: center;
+            margin-top: 3.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 450;
+            padding-bottom: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Grid Tweaks */
+        @media (max-width: 1200px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 850px) {
+            .dashboard-header {
+                flex-direction: column !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+            
+            .dashboard-header > div {
+                width: 100% !important;
+                min-width: 100% !important;
+                justify-content: center !important;
+                text-align: center !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            .dashboard-header h1, .dashboard-header p {
+                text-align: center !important;
+            }
+
+            .header-actions {
+                justify-content: center !important;
+                width: 100% !important;
+            }
+
+            .btn-header-action {
+                flex-grow: 1;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-full-width {
+                grid-column: span 1;
+            }
+
+            .card-table-container, .card-filter {
+                padding: 1rem !important;
+            }
+
+            .table-top-bar {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .table-search-box {
+                max-width: 100% !important;
+            }
+
+
+            .portal-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header d-flex justify-content-between align-items-center flex-wrap gap-3" style="padding-bottom: 1.5rem;">
+            <!-- Left: Text -->
+            <div class="text-start" style="flex: 1; min-width: 280px;">
+                <h1 class="portal-title mb-1" style="text-align: left; margin: 0; font-size: 1.8rem;">Ticket Management Dashboard</h1>
+                <p class="portal-subtitle mb-0" style="text-align: left; margin: 0; font-size: 0.95rem;">Track, monitor and manage support tickets</p>
+            </div>
+            
+
+            
+            <!-- Right: Buttons -->
+            <div class="header-actions m-0 p-0 d-flex gap-2" style="flex: 1; justify-content: flex-end; min-width: 280px;">
+                <button type="button" class="btn-header-action" id="btnRefresh">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+                <a href="{% url 'ticket_create' %}" class="btn-header-action btn-header-primary" id="btnCreateNew">
+                    <i class="fas fa-plus"></i> Submit Ticket
+                </a>
+            </div>
+        </header>
+
+        <!-- Summary Cards Section -->
+        <section class="summary-grid" aria-label="Dashboard Statistics Overview">
+            <!-- Total Tickets -->
+            <div class="summary-card card-total">
+                <div class="summary-info">
+                    <div class="summary-label">Total Tickets</div>
+                    <div class="stat-number" id="stats-total">
+                        {{ total_tickets }}
+                    </div>
+                </div>
+                <div class="summary-icon-box">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+            </div>
+
+            <!-- Open Tickets -->
+            <div class="summary-card card-open">
+                <div class="summary-info">
+                    <div class="summary-label">Open Tickets</div>
+                    <div class="stat-number" id="stats-open">
+                        {{ open_tickets }}
+                    </div>
+                </div>
+                <div class="summary-icon-box">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+            </div>
+
+            <!-- Assigned Tickets -->
+            <div class="summary-card card-assigned">
+                <div class="summary-info">
+                    <div class="summary-label">Assigned</div>
+                    <div class="stat-number" id="stats-assigned">
+                        {{ assigned_tickets }}
+                    </div>
+                </div>
+                <div class="summary-icon-box">
+                    <i class="fas fa-user-check"></i>
+                </div>
+            </div>
+
+            <!-- In Progress Tickets -->
+            <div class="summary-card card-inprogress">
+                <div class="summary-info">
+                    <div class="summary-label">In Progress</div>
+                    <div class="stat-number" id="stats-inprogress">
+                        {{ inprogress_tickets }}
+                    </div>
+                </div>
+                <div class="summary-icon-box">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+
+            <!-- Resolved Tickets -->
+            <div class="summary-card card-resolved">
+                <div class="summary-info">
+                    <div class="summary-label">Resolved</div>
+                    <div class="stat-number" id="stats-resolved">
+                        {{ resolved_tickets }}
+                    </div>
+                </div>
+                <div class="summary-icon-box">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+
+            <!-- Closed Tickets -->
+            <div class="summary-card card-closed">
+                <div class="summary-info">
+                    <div class="summary-label">Closed</div>
+                    <div class="stat-number" id="stats-closed">
+                        {{ closed_tickets }}
+                    </div>
+                </div>
+                <div class="summary-icon-box">
+                    <i class="fas fa-archive"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Section -->
+        <main class="dashboard-main">
+
+            <!-- Filters Card -->
+            <section class="card-filter" aria-label="Ticket Filter Panel">
+                <div class="filter-header" id="filterHeader" data-bs-toggle="collapse" data-bs-target="#filterCollapse"
+                    aria-expanded="true" aria-controls="filterCollapse">
+                    <h2 class="filter-title">
+                        <i class="fas fa-filter"></i> Advanced Search & Filter
+                    </h2>
+                    <span class="filter-toggle-icon">
+                        <i class="fas fa-chevron-up"></i>
+                    </span>
+                </div>
+
+                <div class="collapse show" id="filterCollapse">
+                    <form id="filterForm">
+                        <div class="row g-3">
+                            <!-- Search fields -->
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_tkt_num" class="form-label">Ticket Number</label>
+                                <input type="text" class="form-control" id="filter_tkt_num"
+                                    placeholder="e.g. TKT-20260604">
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_emp_name" class="form-label">Employee Name</label>
+                                <input type="text" class="form-control" id="filter_emp_name"
+                                    placeholder="e.g. John Doe">
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_mobile" class="form-label">Mobile Number</label>
+                                <input type="text" class="form-control" id="filter_mobile"
+                                    placeholder="e.g. 9876543210">
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_dept" class="form-label">Department</label>
+                                <select class="form-select" id="filter_dept">
+                                    <option value="">All Departments</option>
+                                    {% for dept in departments %}
+                                    <option value="{{ dept.name }}">{{ dept.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <!-- Dropdowns & Dates -->
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_issue" class="form-label">Issue Type</label>
+                                <select class="form-select" id="filter_issue">
+                                    <option value="">All Issues</option>
+                                    {% for issue in issue_types %}
+                                    <option value="{{ issue.name }}">{{ issue.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_priority" class="form-label">Priority</label>
+                                <select class="form-select" id="filter_priority">
+                                    <option value="">All Priorities</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_status" class="form-label">Status</label>
+                                <select class="form-select" id="filter_status">
+                                    <option value="">All Statuses</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <label for="filter_date" class="form-label">Created Date</label>
+                                <input type="date" class="form-control" id="filter_date">
+                            </div>
+                        </div>
+
+                        <!-- Filter action buttons -->
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <button type="button" class="btn-filter-reset" id="btnResetFilters">
+                                <i class="fas fa-undo"></i> Reset Filters
+                            </button>
+                            <button type="button" class="btn-filter-search" id="btnApplyFilters">
+                                <i class="fas fa-search"></i> Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Table Card -->
+            <section class="card-table-container" aria-label="Ticket Management Table">
+                <div class="table-top-bar">
+                    <h2 class="table-title mb-0">All Support Tickets</h2>
+                    
+                    <div class="table-search-box mx-auto">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control" id="tableSearchInput"
+                            placeholder="Quick search details...">
+                    </div>
+
+                    <select class="form-select" id="tableNameFilter" style="max-width: 200px;">
+                        <option value="">Filter by Name...</option>
+                        {% for option in name_options %}
+                        <option value="{{ option.name }}">{{ option.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Responsive Table -->
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th class="sortable" id="sort-id" data-col="id">Ticket Number <i
+                                        class="fas fa-sort"></i></th>
+                                <th class="sortable" id="sort-employee" data-col="employee">Employee Name <i
+                                        class="fas fa-sort"></i></th>
+                                <th>Mobile</th>
+                                <th class="sortable" id="sort-dept" data-col="department">Dept <i
+                                        class="fas fa-sort"></i></th>
+                                <th class="sortable" id="sort-issue" data-col="issueType">Issue Type <i
+                                        class="fas fa-sort"></i></th>
+                                <th>Subject</th>
+                                <th class="sortable" id="sort-priority" data-col="priority">Priority <i
+                                        class="fas fa-sort"></i></th>
+                                <th class="sortable" id="sort-status" data-col="status">Status <i
+                                        class="fas fa-sort"></i></th>
+                                <th class="sortable" id="sort-date" data-col="date">Created Date <i
+                                        class="fas fa-sort"></i></th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ticket in tickets %}
+                            <tr>
+                                <td>{{ ticket.ticket_no }}</td>
+                                <td>{{ ticket.full_name }}</td>
+                                <td>{{ ticket.mobile_number }}</td>
+                                <td>{{ ticket.department }}</td>
+                                <td>{{ ticket.issue_type }}</td>
+                                <td>{{ ticket.subject }}</td>
+                                <td>{{ ticket.priority }}</td>
+                                <td>{{ ticket.status }}</td>
+                                <td>{{ ticket.id }}</td>
+                                <td>
+                                        <a href="{% url 'ticket_edit' ticket.id %}" class="btn btn-outline-primary btn-sm" title="View & Edit Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                       <button class="btn btn-outline-info btn-sm">
+                                            <a href="{% url 'ticket_status' ticket.id %}">
+                                                <i class="fas fa-sync-alt"></i>
+                                            </a>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm" title="Delete Ticket" onclick="openDeleteModal('{{ ticket.id }}')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination UI -->
+                <div class="pagination-container">
+                    <div class="pagination-info" id="pagination-text-summary">
+                        Showing 1 to 10 of 10 tickets
+                    </div>
+                    <nav aria-label="Ticket pagination navigation">
+                        <ul class="pagination" id="table-pagination">
+                            <!-- Populated dynamically via JS -->
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="portal-footer" id="portal-footer">
+            <p>&copy; 2026 Enterprise Resource Planning. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteTicketModal" tabindex="-1" aria-labelledby="deleteTicketModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="deleteTicketModalLabel"><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="deleteTicketForm" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <p>Are you sure you want to permanently delete this ticket? This action cannot be undone.</p>
+                        <div class="mb-3">
+                            <label for="deletePasscode" class="form-label">Please enter passcode to confirm:</label>
+                            <input type="password" class="form-control" id="deletePasscode" name="passcode" required placeholder="Enter passcode...">
+                            <div class="invalid-feedback" id="deletePasscodeError">
+                                Incorrect passcode.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger" id="btnConfirmDelete">Delete Ticket</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: View Ticket Details -->
+    <div class="modal fade" id="viewTicketModal" tabindex="-1" aria-labelledby="viewTicketModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="viewTicketModalLabel">Ticket Details</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Ticket Number</div>
+                            <div class="detail-value fw-bold text-primary" id="view-ticket-num"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Created Date</div>
+                            <div class="detail-value" id="view-date"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Employee Name</div>
+                            <div class="detail-value" id="view-name"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Mobile Number</div>
+                            <div class="detail-value" id="view-mobile"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Department</div>
+                            <div class="detail-value" id="view-dept"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Email Address</div>
+                            <div class="detail-value" id="view-email"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Issue Type</div>
+                            <div class="detail-value" id="view-issue"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Priority</div>
+                            <div id="view-priority"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div id="view-status"></div>
+                        </div>
+                        <div class="detail-item detail-full-width">
+                            <div class="detail-label">Subject</div>
+                            <div class="detail-value fw-semibold text-dark" id="view-subject"></div>
+                        </div>
+                        <div class="detail-item detail-full-width">
+                            <div class="detail-label">Detailed Description</div>
+                            <div class="desc-box" id="view-description"></div>
+                        </div>
+                        <div class="detail-item detail-full-width" id="view-attachment-row">
+                            <div class="detail-label">Attachment</div>
+                            <div class="attachment-box">
+                                <i class="far fa-file-pdf" id="view-attachment-icon"></i>
+                                <span class="attachment-name" id="view-attachment-name"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-close" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Edit Ticket Details -->
+    <div class="modal fade" id="editTicketModal" tabindex="-1" aria-labelledby="editTicketModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <form id="editTicketForm" novalidate>
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="editTicketModalLabel">Edit Ticket</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-index">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="edit-ticket-num" class="form-label">Ticket Number</label>
+                                <input type="text" class="form-control" id="edit-ticket-num" readonly tabindex="-1"
+                                    aria-readonly="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-date" class="form-label">Created Date</label>
+                                <input type="text" class="form-control" id="edit-date" readonly tabindex="-1"
+                                    aria-readonly="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-name" class="form-label">Employee Name</label>
+                                <input type="text" class="form-control" id="edit-name" required>
+                                <div class="invalid-feedback">Employee name is required.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-mobile" class="form-label">Mobile Number</label>
+                                <input type="tel" class="form-control" id="edit-mobile" required>
+                                <div class="invalid-feedback">Enter a valid 10-digit mobile number.</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-dept" class="form-label">Department</label>
+                                <select class="form-select" id="edit-dept">
+                                    {% for dept in departments %}
+                                    <option value="{{ dept.name }}">{{ dept.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-issue" class="form-label">Issue Type</label>
+                                <select class="form-select" id="edit-issue">
+                                    {% for issue in issue_types %}
+                                    <option value="{{ issue.name }}">{{ issue.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-priority" class="form-label">Priority</label>
+                                <select class="form-select" id="edit-priority">
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="edit-status" class="form-label">Status</label>
+                                <select class="form-select" id="edit-status">
+                                    <option value="Open">Open</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="edit-subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="edit-subject" required>
+                                <div class="invalid-feedback">Subject is required.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="edit-description" class="form-label">Description</label>
+                                <textarea class="form-control" id="edit-description" rows="4" required></textarea>
+                                <div class="invalid-feedback">Detailed description is required.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-modal-close" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-modal-action" id="btnSaveEdit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Update Status Quick Modal -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="statusUpdateForm" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="statusModalLabel">Update Ticket Status</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="status-ticket-index">
+                        <div class="mb-3">
+                            <label for="status-ticket-num" class="form-label">Ticket Number</label>
+                            <input type="text" class="form-control" id="status-ticket-num" readonly tabindex="-1"
+                                aria-readonly="true">
+                        </div>
+                        <div class="mb-3">
+                            <label for="status-select" class="form-label">New Status</label>
+                            <select class="form-select" id="status-select" name="status">
+                                <option value="Open">Open</option>
+                                <option value="Assigned">Assigned</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-modal-close" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-modal-action">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3.3 Bundle JS with SRI -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- Application Script -->
+    <script>
+        const tickets = [
+            {% for t in tickets %}
+            {
+                id: "{{ t.ticket_no|escapejs }}",
+                db_id: "{{ t.id }}",
+                employee: "{{ t.full_name|escapejs }}",
+                mobile: "{{ t.mobile_number|escapejs }}",
+                department: "{{ t.department|escapejs }}",
+                issueType: "{{ t.issue_type|escapejs }}",
+                subject: "{{ t.subject|escapejs }}",
+                description: "{{ t.description|escapejs }}",
+                priority: "{{ t.priority|escapejs }}",
+                status: "{{ t.status|escapejs }}",
+                date: "{{ t.created_at|date:'Y-m-d' }}",
+                attachment: "{% if t.attachment %}{{ t.attachment.name|escapejs }}{% endif %}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // State management variables
+            let filteredList = [...tickets];
+            let currentSortCol = 'date';
+            let currentSortDirection = 'desc'; // Default descending date
+
+            // Pagination state
+            const rowsPerPage = 5;
+            let currentPage = 1;
+
+            // DOM Elements Setup for rendering
+            const tableBody = document.querySelector('tbody');
+            const paginationContainer = document.getElementById('table-pagination');
+            const showingText = document.getElementById('pagination-text-summary');
+            const searchInput = document.getElementById('tableSearchInput');
+            const filterTktNum = document.getElementById('filter_tkt_num');
+            const filterEmpName = document.getElementById('filter_emp_name');
+            const filterMobile = document.getElementById('filter_mobile');
+            const filterDept = document.getElementById('filter_dept');
+            const filterIssue = document.getElementById('filter_issue');
+            const filterPriority = document.getElementById('filter_priority');
+            const filterStatus = document.getElementById('filter_status');
+            const filterDate = document.getElementById('filter_date');
+
+            const btnApplyFilters = document.getElementById('btnApplyFilters');
+            const btnResetFilters = document.getElementById('btnResetFilters');
+            const btnRefresh = document.getElementById('btnRefresh');
+
+            // Modals & Forms
+            const viewModal = new bootstrap.Modal(document.getElementById('viewTicketModal'));
+            const editModal = new bootstrap.Modal(document.getElementById('editTicketModal'));
+            const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+
+            const editForm = document.getElementById('editTicketForm');
+            const statusForm = document.getElementById('statusUpdateForm');
+
+            // Functions
+
+            // 1. Calculate & Update Dashboard Statistics Cards
+            const updateStats = () => {
+                const total = tickets.length;
+                const open = tickets.filter(t => t.status === 'Open').length;
+                const assigned = tickets.filter(t => t.status === 'Assigned').length;
+                const inprogress = tickets.filter(t => t.status === 'In Progress').length;
+                const resolved = tickets.filter(t => t.status === 'Resolved').length;
+                const closed = tickets.filter(t => t.status === 'Closed').length;
+
+                // Safe textContent assignments (Vanilla DOM guidelines)
+                document.getElementById('stats-total').textContent = total;
+                document.getElementById('stats-open').textContent = open;
+                document.getElementById('stats-assigned').textContent = assigned;
+                document.getElementById('stats-inprogress').textContent = inprogress;
+                document.getElementById('stats-resolved').textContent = resolved;
+                document.getElementById('stats-closed').textContent = closed;
+            };
+
+            // 2. Render Table Rows (Securely programmatically creating elements)
+            const renderTable = () => {
+                tableBody.replaceChildren(); // Safely clear all contents first
+
+                // Handle Empty Dataset
+                if (filteredList.length === 0) {
+                    const tr = document.createElement('tr');
+                    const td = document.createElement('td');
+                    td.setAttribute('colspan', '10');
+                    td.className = 'text-center py-4 text-muted fw-medium';
+                    td.textContent = 'No tickets found matching the search criteria.';
+                    tr.appendChild(td);
+                    tableBody.appendChild(tr);
+
+                    updatePaginationUI(0);
+                    return;
+                }
+
+                // Sorting
+                sortData();
+
+                // Paginate
+                const startIndex = (currentPage - 1) * rowsPerPage;
+                const endIndex = Math.min(startIndex + rowsPerPage, filteredList.length);
+                const paginatedData = filteredList.slice(startIndex, endIndex);
+
+                paginatedData.forEach((ticket, localIdx) => {
+                    const globalIdx = tickets.findIndex(t => t.id === ticket.id);
+
+                    const tr = document.createElement('tr');
+
+                    // Ticket Number
+                    const tdId = document.createElement('td');
+                    tdId.className = 'fw-bold text-primary';
+                    tdId.textContent = ticket.id;
+                    tr.appendChild(tdId);
+
+                    // Employee Name
+                    const tdEmp = document.createElement('td');
+                    tdEmp.textContent = ticket.employee;
+                    tr.appendChild(tdEmp);
+
+                    // Mobile
+                    const tdMobile = document.createElement('td');
+                    tdMobile.textContent = ticket.mobile;
+                    tr.appendChild(tdMobile);
+
+                    // Department
+                    const tdDept = document.createElement('td');
+                    tdDept.textContent = ticket.department;
+                    tr.appendChild(tdDept);
+
+                    // Issue Type
+                    const tdIssue = document.createElement('td');
+                    tdIssue.textContent = ticket.issueType;
+                    tr.appendChild(tdIssue);
+
+                    // Subject
+                    const tdSub = document.createElement('td');
+                    tdSub.className = 'text-truncate';
+                    tdSub.style.maxWidth = '180px';
+                    tdSub.textContent = ticket.subject;
+                    tr.appendChild(tdSub);
+
+                    // Priority
+                    const tdPriority = document.createElement('td');
+                    const priBadge = document.createElement('span');
+                    priBadge.className = `priority-badge priority-badge-${ticket.priority.toLowerCase()}`;
+                    priBadge.textContent = ticket.priority;
+                    tdPriority.appendChild(priBadge);
+                    tr.appendChild(tdPriority);
+
+                    // Status
+                    const tdStatus = document.createElement('td');
+                    const statBadge = document.createElement('span');
+                    statBadge.className = `status-badge status-badge-${ticket.status.toLowerCase().replace(' ', '-')}`;
+
+                    // Add standard icon into badge
+                    const badgeIcon = document.createElement('i');
+                    if (ticket.status === 'Open') badgeIcon.className = 'fas fa-envelope-open-text me-1';
+                    else if (ticket.status === 'Assigned') badgeIcon.className = 'fas fa-user-check me-1';
+                    else if (ticket.status === 'In Progress') badgeIcon.className = 'fas fa-spinner fa-spin me-1';
+                    else if (ticket.status === 'Resolved') badgeIcon.className = 'fas fa-check-circle me-1';
+                    else if (ticket.status === 'Closed') badgeIcon.className = 'fas fa-archive me-1';
+
+                    statBadge.appendChild(badgeIcon);
+
+                    // Add text node safely
+                    const badgeText = document.createTextNode(ticket.status);
+                    statBadge.appendChild(badgeText);
+
+                    tdStatus.appendChild(statBadge);
+                    tr.appendChild(tdStatus);
+
+                    // Date
+                    const tdDate = document.createElement('td');
+                    tdDate.textContent = ticket.date;
+                    tr.appendChild(tdDate);
+
+                    // Action Buttons (View, Edit, Status)
+                    const tdActions = document.createElement('td');
+                    const btnGroup = document.createElement('div');
+                    btnGroup.className = 'd-flex gap-1 justify-content-center';
+
+                    // View/Edit Button (Eye Icon now redirects to Edit Page)
+                    const btnView = document.createElement('button');
+                    btnView.type = 'button';
+                    btnView.className = 'btn btn-action btn-outline-primary';
+                    btnView.title = 'View & Edit Details';
+                    btnView.setAttribute('aria-label', `View and edit details for ticket ${ticket.id}`);
+                    const iconView = document.createElement('i');
+                    iconView.className = 'fas fa-eye';
+                    btnView.appendChild(iconView);
+                    
+                    // Open edit page using native anchor logic, constructed manually
+                    const editUrl = `{% url 'ticket_edit' 999999 %}`.replace('999999', ticket.db_id);
+                    btnView.addEventListener('click', () => { window.location.href = editUrl; });
+                    btnGroup.appendChild(btnView);
+
+                    // Update Status Button
+                    const btnStatus = document.createElement('button');
+                    btnStatus.type = 'button';
+                    btnStatus.className = 'btn btn-action btn-outline-info';
+                    btnStatus.title = 'Update Status';
+                    btnStatus.setAttribute('aria-label', `Update status for ticket ${ticket.id}`);
+                    const iconStatus = document.createElement('i');
+                    iconStatus.className = 'fas fa-sync-alt';
+                    btnStatus.appendChild(iconStatus);
+                    const statusUrl = `{% url 'ticket_status' 999999 %}`.replace('999999', ticket.db_id);
+                    btnStatus.addEventListener('click', () => { 
+                        document.getElementById('status-ticket-num').value = ticket.id;
+                        document.getElementById('status-select').value = ticket.status;
+                        document.getElementById('statusUpdateForm').action = statusUrl;
+                        statusModal.show();
+                    });
+                    btnGroup.appendChild(btnStatus);
+
+                    // Delete Button
+                    const btnDelete = document.createElement('button');
+                    btnDelete.type = 'button';
+                    btnDelete.className = 'btn btn-action btn-outline-danger';
+                    btnDelete.title = 'Delete Ticket';
+                    btnDelete.setAttribute('aria-label', `Delete ticket ${ticket.id}`);
+                    const iconDelete = document.createElement('i');
+                    iconDelete.className = 'fas fa-trash-alt';
+                    btnDelete.appendChild(iconDelete);
+                    btnDelete.addEventListener('click', () => { 
+                        openDeleteModal(ticket.db_id);
+                    });
+                    btnGroup.appendChild(btnDelete);
+
+                    tdActions.appendChild(btnGroup);
+                    tr.appendChild(tdActions);
+
+                    tableBody.appendChild(tr);
+                });
+
+                // Update text summary
+                const textSummary = document.getElementById('pagination-text-summary');
+                textSummary.textContent = `Showing ${startIndex + 1} to ${endIndex} of ${filteredList.length} tickets`;
+
+                // Update navigation numbers
+                updatePaginationUI(filteredList.length);
+            };
+
+            // 3. Sorting logic
+            const sortData = () => {
+                filteredList.sort((a, b) => {
+                    let valA = a[currentSortCol].toString().toLowerCase();
+                    let valB = b[currentSortCol].toString().toLowerCase();
+
+                    // Handle Date sort properly
+                    if (currentSortCol === 'date') {
+                        valA = new Date(a.date);
+                        valB = new Date(b.date);
+                    }
+
+                    // Handle Priority rank sorting
+                    if (currentSortCol === 'priority') {
+                        const rank = { 'low': 1, 'medium': 2, 'high': 3, 'critical': 4 };
+                        valA = rank[a.priority.toLowerCase()] || 0;
+                        valB = rank[b.priority.toLowerCase()] || 0;
+                    }
+
+                    if (valA < valB) return currentSortDirection === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            };
+
+            // Header Sort Click Handlers
+            const headers = document.querySelectorAll('.table th.sortable');
+            headers.forEach(header => {
+                header.addEventListener('click', () => {
+                    const colName = header.getAttribute('data-col');
+
+                    // Reset all sort classes
+                    headers.forEach(h => {
+                        h.classList.remove('sorted-asc', 'sorted-desc');
+                        const icon = h.querySelector('i');
+                        icon.className = 'fas fa-sort';
+                    });
+
+                    if (currentSortCol === colName) {
+                        currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        currentSortCol = colName;
+                        currentSortDirection = 'asc';
+                    }
+
+                    const activeIcon = header.querySelector('i');
+                    if (currentSortDirection === 'asc') {
+                        header.classList.add('sorted-asc');
+                        activeIcon.className = 'fas fa-sort-up';
+                    } else {
+                        header.classList.add('sorted-desc');
+                        activeIcon.className = 'fas fa-sort-down';
+                    }
+
+                    renderTable();
+                });
+            });
+
+            // 4. Pagination Elements Renderer
+            const updatePaginationUI = (totalRows) => {
+                const totalPages = Math.ceil(totalRows / rowsPerPage);
+                const paginationUl = document.getElementById('table-pagination');
+                paginationUl.replaceChildren(); // Safely clear
+
+                if (totalPages <= 1) return; // No pagination UI needed for single page
+
+                // Previous Button
+                const prevLi = document.createElement('li');
+                prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                const prevLink = document.createElement('a');
+                prevLink.className = 'page-link';
+                prevLink.setAttribute('href', '#');
+                prevLink.textContent = 'Previous';
+                prevLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderTable();
+                    }
+                });
+                prevLi.appendChild(prevLink);
+                paginationUl.appendChild(prevLi);
+
+                // Numbered pages
+                for (let i = 1; i <= totalPages; i++) {
+                    const numLi = document.createElement('li');
+                    numLi.className = `page-item ${currentPage === i ? 'active' : ''}`;
+                    const numLink = document.createElement('a');
+                    numLink.className = 'page-link';
+                    numLink.setAttribute('href', '#');
+                    numLink.textContent = i;
+                    numLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        currentPage = i;
+                        renderTable();
+                    });
+                    numLi.appendChild(numLink);
+                    paginationUl.appendChild(numLi);
+                }
+
+                // Next Button
+                const nextLi = document.createElement('li');
+                nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+                const nextLink = document.createElement('a');
+                nextLink.className = 'page-link';
+                nextLink.setAttribute('href', '#');
+                nextLink.textContent = 'Next';
+                nextLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderTable();
+                    }
+                });
+                nextLi.appendChild(nextLink);
+                paginationUl.appendChild(nextLi);
+            };
+
+            // 5. Apply Filters Form Submit / Action
+            const applyFilters = () => {
+                const qTktNum = filterTktNum.value.trim().toLowerCase();
+                const qName = filterEmpName.value.trim().toLowerCase();
+                const qMobile = filterMobile.value.trim().toLowerCase();
+                const qDept = filterDept.value;
+                const qIssue = filterIssue.value;
+                const qPriority = filterPriority.value;
+                const qStatus = filterStatus.value;
+                const qDateVal = filterDate.value; // YYYY-MM-DD
+
+                filteredList = tickets.filter(ticket => {
+                    // Search Fields
+                    if (qTktNum && !ticket.id.toLowerCase().includes(qTktNum)) return false;
+                    if (qName && !ticket.employee.toLowerCase().includes(qName)) return false;
+                    if (qMobile && !ticket.mobile.includes(qMobile)) return false;
+
+                    // Dropdown Filters
+                    if (qDept && ticket.department !== qDept) return false;
+                    if (qIssue && ticket.issueType !== qIssue) return false;
+                    if (qPriority && ticket.priority !== qPriority) return false;
+                    if (qStatus && ticket.status !== qStatus) return false;
+
+                    // Created Date Compare
+                    if (qDateVal) {
+                        const ticketDateStr = ticket.date.split(' ')[0]; // Extract YYYY-MM-DD
+                        if (ticketDateStr !== qDateVal) return false;
+                    }
+
+                    return true;
+                });
+
+                currentPage = 1; // Reset to page 1 on filter trigger
+                renderTable();
+            };
+
+            // Reset Filters Event
+            const resetFilters = () => {
+                document.getElementById('filterForm').reset();
+                filteredList = [...tickets];
+                currentPage = 1;
+                renderTable();
+            };
+
+            btnApplyFilters.addEventListener('click', applyFilters);
+            btnResetFilters.addEventListener('click', resetFilters);
+
+            // Refresh Action Handler
+            if (btnRefresh) {
+                btnRefresh.addEventListener('click', () => {
+                    window.location.reload();
+                });
+            }
+
+            // Quick search input text filter (lives in top table toolbar)
+            const nameFilterInput = document.getElementById('tableNameFilter');
+
+            const applyTableSearch = () => {
+                const query = searchInput.value.toLowerCase().trim();
+                const nameFilter = nameFilterInput.value.toLowerCase().trim();
+
+                if (query === '' && nameFilter === '') {
+                    applyFilters(); // Re-apply the dropdown inputs if text search is wiped
+                    return;
+                }
+
+                // Scans ID, Employee Name, Mobile, Department, Subject, Description
+                filteredList = tickets.filter(t => {
+                    let matchesSearch = true;
+                    if (query !== '') {
+                        matchesSearch = t.id.toLowerCase().includes(query) ||
+                                        t.employee.toLowerCase().includes(query) ||
+                                        t.mobile.includes(query) ||
+                                        t.department.toLowerCase().includes(query) ||
+                                        t.subject.toLowerCase().includes(query) ||
+                                        t.description.toLowerCase().includes(query);
+                    }
+                    
+                    let matchesName = true;
+                    if (nameFilter !== '') {
+                        matchesName = t.employee.toLowerCase().includes(nameFilter);
+                    }
+                    
+                    return matchesSearch && matchesName;
+                });
+
+                currentPage = 1;
+                renderTable();
+            };
+
+            searchInput.addEventListener('input', applyTableSearch);
+            nameFilterInput.addEventListener('change', applyTableSearch);
+
+            // 6. View Details Modal Handler (Read-only, secure assignments)
+            const showTicketDetails = (ticket) => {
+                document.getElementById('view-ticket-num').textContent = ticket.id;
+                document.getElementById('view-date').textContent = ticket.date;
+                document.getElementById('view-name').textContent = ticket.employee;
+                document.getElementById('view-mobile').textContent = ticket.mobile;
+                document.getElementById('view-dept').textContent = ticket.department;
+
+                const emailEl = document.getElementById('view-email');
+                emailEl.textContent = ticket.email || 'N/A';
+
+                document.getElementById('view-issue').textContent = ticket.issueType;
+
+                // Priority Badge
+                const priContainer = document.getElementById('view-priority');
+                priContainer.replaceChildren();
+                const priBadge = document.createElement('span');
+                priBadge.className = `priority-badge priority-badge-${ticket.priority.toLowerCase()}`;
+                priBadge.textContent = ticket.priority;
+                priContainer.appendChild(priBadge);
+
+                // Status Badge
+                const statContainer = document.getElementById('view-status');
+                statContainer.replaceChildren();
+                const statBadge = document.createElement('span');
+                statBadge.className = `status-badge status-badge-${ticket.status.toLowerCase().replace(' ', '-')}`;
+
+                const statusIcon = document.createElement('i');
+                if (ticket.status === 'Open') statusIcon.className = 'fas fa-envelope-open-text me-1';
+                else if (ticket.status === 'Assigned') statusIcon.className = 'fas fa-user-check me-1';
+                else if (ticket.status === 'In Progress') statusIcon.className = 'fas fa-spinner fa-spin me-1';
+                else if (ticket.status === 'Resolved') statusIcon.className = 'fas fa-check-circle me-1';
+                else if (ticket.status === 'Closed') statusIcon.className = 'fas fa-archive me-1';
+                statBadge.appendChild(statusIcon);
+
+                const statusText = document.createTextNode(ticket.status);
+                statBadge.appendChild(statusText);
+                statContainer.appendChild(statBadge);
+
+                document.getElementById('view-subject').textContent = ticket.subject;
+                document.getElementById('view-description').textContent = ticket.description;
+
+                // Attachment Section
+                const attachmentRow = document.getElementById('view-attachment-row');
+                if (ticket.attachment) {
+                    attachmentRow.style.display = 'block';
+                    const nameEl = document.getElementById('view-attachment-name');
+                    nameEl.textContent = ticket.attachment;
+
+                    // Update attachment file icon dynamically
+                    const ext = ticket.attachment.split('.').pop().toLowerCase();
+                    const iconEl = document.getElementById('view-attachment-icon');
+                    iconEl.className = ''; // Reset
+                    if (['jpg', 'jpeg', 'png'].includes(ext)) iconEl.className = 'far fa-file-image me-1';
+                    else if (ext === 'pdf') iconEl.className = 'far fa-file-pdf me-1';
+                    else if (['doc', 'docx'].includes(ext)) iconEl.className = 'far fa-file-word me-1';
+                    else if (['xls', 'xlsx'].includes(ext)) iconEl.className = 'far fa-file-excel me-1';
+                    else if (ext === 'zip') iconEl.className = 'far fa-file-archive me-1';
+                    else iconEl.className = 'far fa-file-alt me-1';
+                } else {
+                    attachmentRow.style.display = 'none';
+                }
+
+                viewModal.show();
+            };
+
+            // Initialize Dashboard View
+            updateStats();
+            renderTable();
+        });
+
+        function openDeleteModal(ticketId) {
+            const deleteForm = document.getElementById('deleteTicketForm');
+            // Update the form action URL dynamically
+            deleteForm.action = "{% url 'ticket_delete' 0 %}".replace('0', ticketId);
+            
+            // Clear previous input/errors
+            const passcodeField = document.getElementById('deletePasscode');
+            passcodeField.value = '';
+            passcodeField.classList.remove('is-invalid');
+            
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteTicketModal'));
+            deleteModal.show();
+        }
+
+        document.getElementById('deleteTicketForm').addEventListener('submit', function(e) {
+            const passcodeField = document.getElementById('deletePasscode');
+            if (passcodeField.value !== 'it@heritage') {
+                e.preventDefault(); // Stop form from submitting to backend
+                passcodeField.classList.add('is-invalid');
+            } else {
+                passcodeField.classList.remove('is-invalid');
+                // Form will proceed to POST to the backend delete view!
+            }
+        });
+
+    </script>
+
+
+</body>
+
+</html>
