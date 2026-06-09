@@ -9,8 +9,8 @@ class TicketForm(forms.ModelForm):
 
         fields = [
             'full_name',
-            'mobile_number',
-            'email',
+            # 'mobile_number',
+            # 'email',
             'department',
             'issue_type',
             'priority',

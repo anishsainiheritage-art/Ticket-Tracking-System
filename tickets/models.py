@@ -101,15 +101,15 @@ class Ticket(models.Model):
         max_length=150,
         verbose_name='Full Name',
     )
-    mobile_number = models.CharField(
-        max_length=15,
-        verbose_name='Mobile Number',
-    )
-    email = models.EmailField(
-        blank=True,
-        null=True,
-        verbose_name='Email Address',
-    )
+    # mobile_number = models.CharField(
+    #     max_length=15,
+    #     verbose_name='Mobile Number',
+    # )
+    # email = models.EmailField(
+    #     blank=True,
+    #     null=True,
+    #     verbose_name='Email Address',
+    # )
 
     # ── Classification ───────────────────────────────────────────────────────
     department = models.CharField(
