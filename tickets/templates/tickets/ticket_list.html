@@ -968,11 +968,6 @@
                                     placeholder="e.g. John Doe">
                             </div>
 
-                            <div class="col-md-3 col-sm-6">
-                                <label for="filter_mobile" class="form-label">Mobile Number</label>
-                                <input type="text" class="form-control" id="filter_mobile"
-                                    placeholder="e.g. 9876543210">
-                            </div>
 
                             <div class="col-md-3 col-sm-6">
                                 <label for="filter_dept" class="form-label">Department</label>
@@ -1013,7 +1008,7 @@
                                     <option value="Open">Open</option>
                                     <option value="Assigned">Assigned</option>
                                     <option value="In Progress">In Progress</option>
-                                    <option value="Resolved">Resolved</option>
+
                                     <option value="Closed">Closed</option>
                                 </select>
                             </div>
@@ -1065,12 +1060,12 @@
                                         class="fas fa-sort"></i></th>
                                 <th class="sortable" id="sort-employee" data-col="employee">Employee Name <i
                                         class="fas fa-sort"></i></th>
-                                <th>Mobile</th>
+
                                 <th class="sortable" id="sort-dept" data-col="department">Dept <i
                                         class="fas fa-sort"></i></th>
                                 <th class="sortable" id="sort-issue" data-col="issueType">Issue Type <i
                                         class="fas fa-sort"></i></th>
-                                <th>Subject</th>
+
                                 <th class="sortable" id="sort-priority" data-col="priority">Priority <i
                                         class="fas fa-sort"></i></th>
                                 <th class="sortable" id="sort-status" data-col="status">Status <i
@@ -1085,25 +1080,18 @@
                             <tr>
                                 <td>{{ ticket.ticket_no }}</td>
                                 <td>{{ ticket.full_name }}</td>
-                                <td>{{ ticket.mobile_number }}</td>
+
                                 <td>{{ ticket.department }}</td>
                                 <td>{{ ticket.issue_type }}</td>
-                                <td>{{ ticket.subject }}</td>
+
                                 <td>{{ ticket.priority }}</td>
                                 <td>{{ ticket.status }}</td>
                                 <td>{{ ticket.id }}</td>
                                 <td>
-                                        <a href="{% url 'ticket_edit' ticket.id %}" class="btn btn-outline-primary btn-sm" title="View & Edit Details">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" title="View Details">
                                             <i class="fas fa-eye"></i>
-                                        </a>
-                                       <button class="btn btn-outline-info btn-sm">
-                                            <a href="{% url 'ticket_status' ticket.id %}">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </a>
                                         </button>
-                                        <button class="btn btn-outline-danger btn-sm" title="Delete Ticket" onclick="openDeleteModal('{{ ticket.id }}')">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+
                                 </td>
                             </tr>
                             {% endfor %}
@@ -1184,10 +1172,7 @@
                             <div class="detail-label">Employee Name</div>
                             <div class="detail-value" id="view-name"></div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Mobile Number</div>
-                            <div class="detail-value" id="view-mobile"></div>
-                        </div>
+
                         <div class="detail-item">
                             <div class="detail-label">Department</div>
                             <div class="detail-value" id="view-dept"></div>
@@ -1208,10 +1193,7 @@
                             <div class="detail-label">Status</div>
                             <div id="view-status"></div>
                         </div>
-                        <div class="detail-item detail-full-width">
-                            <div class="detail-label">Subject</div>
-                            <div class="detail-value fw-semibold text-dark" id="view-subject"></div>
-                        </div>
+
                         <div class="detail-item detail-full-width">
                             <div class="detail-label">Detailed Description</div>
                             <div class="desc-box" id="view-description"></div>
@@ -1220,7 +1202,7 @@
                             <div class="detail-label">Attachment</div>
                             <div class="attachment-box">
                                 <i class="far fa-file-pdf" id="view-attachment-icon"></i>
-                                <span class="attachment-name" id="view-attachment-name"></span>
+                                <a href="#" target="_blank" class="attachment-name text-decoration-none" id="view-attachment-name"></a>
                             </div>
                         </div>
                     </div>
@@ -1260,11 +1242,7 @@
                                 <input type="text" class="form-control" id="edit-name" required>
                                 <div class="invalid-feedback">Employee name is required.</div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="edit-mobile" class="form-label">Mobile Number</label>
-                                <input type="tel" class="form-control" id="edit-mobile" required>
-                                <div class="invalid-feedback">Enter a valid 10-digit mobile number.</div>
-                            </div>
+
                             <div class="col-md-6">
                                 <label for="edit-dept" class="form-label">Department</label>
                                 <select class="form-select" id="edit-dept">
@@ -1275,11 +1253,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="edit-issue" class="form-label">Issue Type</label>
-                                <select class="form-select" id="edit-issue">
-                                    {% for issue in issue_types %}
-                                    <option value="{{ issue.name }}">{{ issue.name }}</option>
-                                    {% endfor %}
-                                </select>
+                                <input type="text" class="form-control" id="edit-issue" value="ERP Issue" readonly tabindex="-1" aria-readonly="true">
                             </div>
                             <div class="col-md-6">
                                 <label for="edit-priority" class="form-label">Priority</label>
@@ -1296,14 +1270,9 @@
                                     <option value="Open">Open</option>
                                     <option value="Assigned">Assigned</option>
                                     <option value="In Progress">In Progress</option>
-                                    <option value="Resolved">Resolved</option>
+
                                     <option value="Closed">Closed</option>
                                 </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="edit-subject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="edit-subject" required>
-                                <div class="invalid-feedback">Subject is required.</div>
                             </div>
                             <div class="col-12">
                                 <label for="edit-description" class="form-label">Description</label>
@@ -1344,7 +1313,7 @@
                                 <option value="Open">Open</option>
                                 <option value="Assigned">Assigned</option>
                                 <option value="In Progress">In Progress</option>
-                                <option value="Resolved">Resolved</option>
+
                                 <option value="Closed">Closed</option>
                             </select>
                         </div>
@@ -1365,24 +1334,8 @@
 
     <!-- Application Script -->
     <script>
-        const tickets = [
-            {% for t in tickets %}
-            {
-                id: "{{ t.ticket_no|escapejs }}",
-                db_id: "{{ t.id }}",
-                employee: "{{ t.full_name|escapejs }}",
-                mobile: "{{ t.mobile_number|escapejs }}",
-                department: "{{ t.department|escapejs }}",
-                issueType: "{{ t.issue_type|escapejs }}",
-                subject: "{{ t.subject|escapejs }}",
-                description: "{{ t.description|escapejs }}",
-                priority: "{{ t.priority|escapejs }}",
-                status: "{{ t.status|escapejs }}",
-                date: "{{ t.created_at|date:'Y-m-d' }}",
-                attachment: "{% if t.attachment %}{{ t.attachment.name|escapejs }}{% endif %}"
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
+        // Load tickets safely using serialized JSON string from Django view
+        const tickets = JSON.parse('{{ tickets_json|escapejs }}');
 
         document.addEventListener('DOMContentLoaded', () => {
             // State management variables
@@ -1401,7 +1354,7 @@
             const searchInput = document.getElementById('tableSearchInput');
             const filterTktNum = document.getElementById('filter_tkt_num');
             const filterEmpName = document.getElementById('filter_emp_name');
-            const filterMobile = document.getElementById('filter_mobile');
+
             const filterDept = document.getElementById('filter_dept');
             const filterIssue = document.getElementById('filter_issue');
             const filterPriority = document.getElementById('filter_priority');
@@ -1482,10 +1435,7 @@
                     tdEmp.textContent = ticket.employee;
                     tr.appendChild(tdEmp);
 
-                    // Mobile
-                    const tdMobile = document.createElement('td');
-                    tdMobile.textContent = ticket.mobile;
-                    tr.appendChild(tdMobile);
+
 
                     // Department
                     const tdDept = document.createElement('td');
@@ -1497,12 +1447,7 @@
                     tdIssue.textContent = ticket.issueType;
                     tr.appendChild(tdIssue);
 
-                    // Subject
-                    const tdSub = document.createElement('td');
-                    tdSub.className = 'text-truncate';
-                    tdSub.style.maxWidth = '180px';
-                    tdSub.textContent = ticket.subject;
-                    tr.appendChild(tdSub);
+
 
                     // Priority
                     const tdPriority = document.createElement('td');
@@ -1544,54 +1489,19 @@
                     const btnGroup = document.createElement('div');
                     btnGroup.className = 'd-flex gap-1 justify-content-center';
 
-                    // View/Edit Button (Eye Icon now redirects to Edit Page)
+                    // View Button (Eye Icon strictly for Read-Only View)
                     const btnView = document.createElement('button');
                     btnView.type = 'button';
                     btnView.className = 'btn btn-action btn-outline-primary';
-                    btnView.title = 'View & Edit Details';
-                    btnView.setAttribute('aria-label', `View and edit details for ticket ${ticket.id}`);
+                    btnView.title = 'View Details';
+                    btnView.setAttribute('aria-label', `View details for ticket ${ticket.id}`);
                     const iconView = document.createElement('i');
                     iconView.className = 'fas fa-eye';
                     btnView.appendChild(iconView);
                     
-                    // Open edit page using native anchor logic, constructed manually
-                    const editUrl = `{% url 'ticket_edit' 999999 %}`.replace('999999', ticket.db_id);
-                    btnView.addEventListener('click', () => { window.location.href = editUrl; });
-                    btnGroup.appendChild(btnView);
-
-                    // Update Status Button
-                    const btnStatus = document.createElement('button');
-                    btnStatus.type = 'button';
-                    btnStatus.className = 'btn btn-action btn-outline-info';
-                    btnStatus.title = 'Update Status';
-                    btnStatus.setAttribute('aria-label', `Update status for ticket ${ticket.id}`);
-                    const iconStatus = document.createElement('i');
-                    iconStatus.className = 'fas fa-sync-alt';
-                    btnStatus.appendChild(iconStatus);
-                    const statusUrl = `{% url 'ticket_status' 999999 %}`.replace('999999', ticket.db_id);
-                    btnStatus.addEventListener('click', () => { 
-                        document.getElementById('status-ticket-num').value = ticket.id;
-                        document.getElementById('status-select').value = ticket.status;
-                        document.getElementById('statusUpdateForm').action = statusUrl;
-                        statusModal.show();
-                    });
-                    btnGroup.appendChild(btnStatus);
-
-                    // Delete Button
-                    const btnDelete = document.createElement('button');
-                    btnDelete.type = 'button';
-                    btnDelete.className = 'btn btn-action btn-outline-danger';
-                    btnDelete.title = 'Delete Ticket';
-                    btnDelete.setAttribute('aria-label', `Delete ticket ${ticket.id}`);
-                    const iconDelete = document.createElement('i');
-                    iconDelete.className = 'fas fa-trash-alt';
-                    btnDelete.appendChild(iconDelete);
-                    btnDelete.addEventListener('click', () => { 
-                        openDeleteModal(ticket.db_id);
-                    });
-                    btnGroup.appendChild(btnDelete);
-
-                    tdActions.appendChild(btnGroup);
+                    // Open view modal logic
+                    btnView.addEventListener('click', () => { showTicketDetails(tickets[globalIdx]); });
+                    btnGroup.appendChild(btnView);                    tdActions.appendChild(btnGroup);
                     tr.appendChild(tdActions);
 
                     tableBody.appendChild(tr);
@@ -1727,7 +1637,7 @@
             const applyFilters = () => {
                 const qTktNum = filterTktNum.value.trim().toLowerCase();
                 const qName = filterEmpName.value.trim().toLowerCase();
-                const qMobile = filterMobile.value.trim().toLowerCase();
+                
                 const qDept = filterDept.value;
                 const qIssue = filterIssue.value;
                 const qPriority = filterPriority.value;
@@ -1738,7 +1648,7 @@
                     // Search Fields
                     if (qTktNum && !ticket.id.toLowerCase().includes(qTktNum)) return false;
                     if (qName && !ticket.employee.toLowerCase().includes(qName)) return false;
-                    if (qMobile && !ticket.mobile.includes(qMobile)) return false;
+
 
                     // Dropdown Filters
                     if (qDept && ticket.department !== qDept) return false;
@@ -1789,15 +1699,15 @@
                     return;
                 }
 
-                // Scans ID, Employee Name, Mobile, Department, Subject, Description
+                // Scans ID, Employee Name, Mobile, Department, Description
                 filteredList = tickets.filter(t => {
                     let matchesSearch = true;
                     if (query !== '') {
                         matchesSearch = t.id.toLowerCase().includes(query) ||
                                         t.employee.toLowerCase().includes(query) ||
-                                        t.mobile.includes(query) ||
+
                                         t.department.toLowerCase().includes(query) ||
-                                        t.subject.toLowerCase().includes(query) ||
+
                                         t.description.toLowerCase().includes(query);
                     }
                     
@@ -1821,7 +1731,7 @@
                 document.getElementById('view-ticket-num').textContent = ticket.id;
                 document.getElementById('view-date').textContent = ticket.date;
                 document.getElementById('view-name').textContent = ticket.employee;
-                document.getElementById('view-mobile').textContent = ticket.mobile;
+
                 document.getElementById('view-dept').textContent = ticket.department;
 
                 const emailEl = document.getElementById('view-email');
@@ -1855,7 +1765,7 @@
                 statBadge.appendChild(statusText);
                 statContainer.appendChild(statBadge);
 
-                document.getElementById('view-subject').textContent = ticket.subject;
+
                 document.getElementById('view-description').textContent = ticket.description;
 
                 // Attachment Section
@@ -1864,6 +1774,7 @@
                     attachmentRow.style.display = 'block';
                     const nameEl = document.getElementById('view-attachment-name');
                     nameEl.textContent = ticket.attachment;
+                    nameEl.href = ticket.attachmentUrl;
 
                     // Update attachment file icon dynamically
                     const ext = ticket.attachment.split('.').pop().toLowerCase();

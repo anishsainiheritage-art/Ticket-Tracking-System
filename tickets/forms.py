@@ -14,7 +14,6 @@ class TicketForm(forms.ModelForm):
             'department',
             'issue_type',
             'priority',
-            'subject',
             'description',
             'attachment',
         ]
@@ -33,3 +32,45 @@ class TicketForm(forms.ModelForm):
             )
 
         return mobile
+
+    def clean_attachment(self):
+        attachment = self.cleaned_data.get('attachment')
+        if not attachment:
+            return attachment
+
+        import os
+        from io import BytesIO
+        from PIL import Image
+        from django.core.files.uploadedfile import InMemoryUploadedFile
+        import sys
+
+        ext = os.path.splitext(attachment.name)[1].lower()
+        if ext in ['.jpg', '.jpeg', '.png']:
+            try:
+                # Read image
+                image = Image.open(attachment)
+                
+                # Convert to RGB if needed (e.g. for PNGs with transparency)
+                if image.mode in ("RGBA", "P"):
+                    image = image.convert("RGB")
+                
+                # Compress into a buffer
+                output = BytesIO()
+                image.save(output, format='JPEG', quality=60, optimize=True)
+                output.seek(0)
+                
+                # Create a new Django InMemoryUploadedFile
+                new_name = os.path.splitext(attachment.name)[0] + '.jpg'
+                attachment = InMemoryUploadedFile(
+                    output,
+                    attachment.field_name,
+                    new_name,
+                    'image/jpeg',
+                    sys.getsizeof(output),
+                    None
+                )
+            except Exception:
+                # If anything fails (e.g., corrupt image), fail gracefully and return original
+                pass
+                
+        return attachment

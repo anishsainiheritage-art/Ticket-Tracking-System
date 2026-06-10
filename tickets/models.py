@@ -44,7 +44,6 @@ class StatusChoices(models.TextChoices):
     OPEN        = 'Open',        'Open'
     ASSIGNED    = 'Assigned',    'Assigned'
     IN_PROGRESS = 'In Progress', 'In Progress'
-    RESOLVED    = 'Resolved',    'Resolved'
     CLOSED      = 'Closed',      'Closed'
 
 
@@ -93,6 +92,7 @@ class Ticket(models.Model):
         unique=True,
         blank=True,          # populated in save() before DB insert
         editable=False,
+        db_index=True,
         verbose_name='Ticket Number',
     )
 
@@ -101,10 +101,12 @@ class Ticket(models.Model):
         max_length=150,
         verbose_name='Full Name',
     )
-    # mobile_number = models.CharField(
-    #     max_length=15,
-    #     verbose_name='Mobile Number',
-    # )
+    mobile_number = models.CharField(
+        max_length=15,
+        verbose_name='Mobile Number',
+        blank=True,
+        null=True,
+    )
     # email = models.EmailField(
     #     blank=True,
     #     null=True,
@@ -114,24 +116,23 @@ class Ticket(models.Model):
     # ── Classification ───────────────────────────────────────────────────────
     department = models.CharField(
         max_length=50,
+        db_index=True,
         verbose_name='Department',
     )
     issue_type = models.CharField(
         max_length=60,
+        db_index=True,
         verbose_name='Issue Type',
     )
     priority = models.CharField(
         max_length=20,
         choices=PriorityChoices.choices,
         default=PriorityChoices.MEDIUM,
+        db_index=True,
         verbose_name='Priority',
     )
 
     # ── Content ──────────────────────────────────────────────────────────────
-    subject = models.CharField(
-        max_length=255,
-        verbose_name='Subject',
-    )
     description = models.TextField(
         verbose_name='Detailed Description',
     )
@@ -147,6 +148,7 @@ class Ticket(models.Model):
         max_length=20,
         choices=StatusChoices.choices,
         default=StatusChoices.OPEN,
+        db_index=True,
         verbose_name='Status',
     )
 

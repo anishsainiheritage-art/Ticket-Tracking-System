@@ -70,7 +70,7 @@ def export_to_pdf(modeladmin, request, queryset):
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = ('ticket_no', 'full_name', 'department', 'issue_type', 'priority', 'status', 'created_at')
-    search_fields = ('ticket_no', 'full_name', 'subject')
+    search_fields = ('ticket_no', 'full_name')
     list_filter = ('status', 'priority', 'department', 'issue_type')
     readonly_fields = ('ticket_no', 'created_at', 'updated_at')
     actions = [export_to_excel, export_to_pdf]

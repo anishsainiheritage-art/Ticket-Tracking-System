@@ -656,6 +656,11 @@
 
         <!-- Ticket Form Container -->
         <div class="form-card" id="form-container">
+            <!-- Form Error Alert -->
+            <div class="alert alert-danger" id="form-error-alert" style="display: none;" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i> <strong>Error!</strong> Please fill in all required fields correctly before submitting.
+            </div>
+
             <form id="ticketForm" method="post" enctype="multipart/form-data" novalidate>
                 <!-- Django CSRF Token Integration Placeholder -->
                 {% csrf_token %}
@@ -701,32 +706,6 @@
                         </div>
                     </div>
                     
-                    <!-- Mobile Number -->
-                    <!-- <div class="col-md-6 form-group">
-                        <label for="mobile_number" class="form-label">
-                            <i class="fas fa-phone-alt"></i> Mobile Number <span class="required-indicator" aria-hidden="true">*</span>
-                        </label>
-                        <input type="tel" class="form-control" id="mobile_number" name="mobile_number" 
-                               value="{% if form.instance.pk %}{{ form.instance.mobile_number }}{% endif %}" placeholder="e.g., 9876543210" required>
-                        <div class="invalid-feedback" id="mobile-feedback">
-                            <i class="fas fa-exclamation-circle"></i> Please enter a valid 10-digit mobile number.
-                        </div>
-                    </div> -->
-                </div>
-
-                <div class="row">
-                    <!-- Email Address -->
-                    <!-- <div class="col-md-6 form-group">
-                        <label for="email" class="form-label">
-                            <i class="fas fa-envelope"></i> Email Address
-                        </label>
-                        <input type="email" class="form-control" id="email" name="email" 
-                               value="{% if form.instance.pk %}{{ form.instance.email }}{% endif %}" placeholder="e.g., john.doe@company.com" maxlength="100">
-                        <div class="invalid-feedback" id="email-feedback">
-                            <i class="fas fa-exclamation-circle"></i> Please enter a valid email address.
-                        </div>
-                    </div> -->
-
                     <!-- Department -->
                     <div class="col-md-6 form-group">
                         <label for="department" class="form-label">
@@ -754,12 +733,7 @@
                         <label for="issue_type" class="form-label">
                             <i class="fas fa-bug"></i> Issue Type
                         </label>
-                        <select class="form-select" id="issue_type" name="issue_type" required>
-                            <option value="" disabled {% if not form.instance.pk %}selected{% endif %}>Select Option</option>
-                            {% for issue in issue_types %}
-                            <option value="{{ issue.name }}" {% if form.instance.issue_type == issue.name %}selected{% endif %}>{{ issue.name }}</option>
-                            {% endfor %}
-                        </select>
+                        <input type="text" class="form-control" id="issue_type" name="issue_type" value="ERP Issue" readonly tabindex="-1" aria-readonly="true">
                     </div>
 
                     <!-- Priority -->
@@ -778,17 +752,6 @@
                 </div>
 
                 <div class="row">
-                    <!-- Subject -->
-                    <div class="col-12 form-group">
-                        <label for="subject" class="form-label">
-                            <i class="fas fa-heading"></i> Subject <span class="required-indicator" aria-hidden="true">*</span>
-                        </label>
-                        <input type="text" class="form-control" id="subject" name="subject" 
-                               value="{% if form.instance.pk %}{{ form.instance.subject }}{% endif %}" placeholder="Brief summary of the problem" required maxlength="150">
-                        <div class="invalid-feedback" id="subject-feedback">
-                            <i class="fas fa-exclamation-circle"></i> Please enter a subject.
-                        </div>
-                    </div>
                 </div>
 
                 <div class="row">
@@ -902,10 +865,7 @@
                             <span class="receipt-label">Priority</span>
                             <span class="receipt-val" id="rec-priority"></span>
                         </div>
-                        <div class="receipt-row">
-                            <span class="receipt-label">Subject</span>
-                            <span class="receipt-val text-truncate" id="rec-subject"></span>
-                        </div>
+
                         <div class="receipt-row">
                             <span class="receipt-label">Created At</span>
                             <span class="receipt-val" id="rec-date"></span>
@@ -951,10 +911,7 @@
             const successModal = new bootstrap.Modal(successModalEl);
 
             // Validation variables
-            const mobileInput = document.getElementById('mobile_number');
             const fullNameInput = document.getElementById('full_name');
-            const emailInput = document.getElementById('email');
-            const subjectInput = document.getElementById('subject');
             const descriptionInput = document.getElementById('description');
             
             // Helper for padding double-digits
@@ -1107,33 +1064,8 @@
                 return isValid;
             };
 
-            const validateMobileNumber = () => {
-                const val = mobileInput.value.trim();
-                // Validates standard 10 digit numbers (supports optional + prefix or country code spacing/hyphen)
-                // e.g. 9876543210, +91 9876543210, +1-9876543210
-                const mobileRegex = /^(\+?\d{1,3}[- ]?)?\d{10}$/;
-                const isValid = mobileRegex.test(val);
-                toggleValidationState(mobileInput, isValid);
-                return isValid;
-            };
 
-            const validateEmail = () => {
-                const val = emailInput.value.trim();
-                if (val === '') {
-                    toggleValidationState(emailInput, true); // Email is optional
-                    return true;
-                }
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const isValid = emailRegex.test(val);
-                toggleValidationState(emailInput, isValid);
-                return isValid;
-            };
 
-            const validateSubject = () => {
-                const isValid = subjectInput.value.trim().length > 0;
-                toggleValidationState(subjectInput, isValid);
-                return isValid;
-            };
 
             const validateDescription = () => {
                 const isValid = descriptionInput.value.trim().length >= 10;
@@ -1151,31 +1083,37 @@
 
             // Input Event Listeners for Live Validation feedback
             fullNameInput.addEventListener('input', validateFullName);
-            mobileInput.addEventListener('input', validateMobileNumber);
-            emailInput.addEventListener('input', validateEmail);
-            subjectInput.addEventListener('input', validateSubject);
             descriptionInput.addEventListener('input', validateDescription);
 
             // Form Submit Listener
             form.addEventListener('submit', (e) => {
+                const isNativeValid = form.checkValidity();
+                
                 // Run validations
                 const isNameValid = validateFullName();
-                const isMobileValid = validateMobileNumber();
-                const isEmailValid = validateEmail();
-                const isSubjectValid = validateSubject();
                 const isDescValid = validateDescription();
-
-                const isFormValid = isNameValid && isMobileValid && isEmailValid && isSubjectValid && isDescValid;
+                const isFormValid = isNameValid && isDescValid && isNativeValid;
 
                 if (!isFormValid) {
                     e.preventDefault(); // Stop submission if invalid
+                    form.classList.add('was-validated');
+                    
+                    const errorAlert = document.getElementById('form-error-alert');
+                    if(errorAlert) {
+                        errorAlert.style.display = 'block';
+                        window.scrollTo({ top: errorAlert.offsetTop - 50, behavior: 'smooth' });
+                    }
+
                     // Focus on the first invalid element
-                    const firstInvalid = form.querySelector('.is-invalid');
+                    const firstInvalid = form.querySelector('.is-invalid, :invalid');
                     if (firstInvalid) {
                         firstInvalid.focus();
                     }
                     return;
                 }
+                
+                const errorAlert = document.getElementById('form-error-alert');
+                if(errorAlert) errorAlert.style.display = 'none';
 
                 // If Valid, show loading screen and process ticket
                 clearInterval(timeInterval); // Stop updating clock since submission is frozen at current date-time
@@ -1193,7 +1131,6 @@
                     document.getElementById('rec-name').textContent = fullNameInput.value;
                     document.getElementById('rec-dept').textContent = document.getElementById('department').value;
                     document.getElementById('rec-date').textContent = dateTimeInput.value;
-                    document.getElementById('rec-subject').textContent = subjectInput.value;
                     
                     // Priority Badge styling and text
                     const priorityVal = document.getElementById('priority').value;

@@ -33,7 +33,8 @@ def ticket_create(request):
     )
 
 
-from django.db.models import Q
+from django.db.models import Q, Count
+import json
 
 def ticket_list(request):
 
@@ -70,16 +71,41 @@ def ticket_list(request):
         tickets = tickets.filter(
             Q(ticket_no__icontains=search_query) |
             Q(full_name__icontains=search_query) |
-            Q(subject__icontains=search_query) |
             Q(description__icontains=search_query)
         )
 
-    total_tickets = tickets.count()
-    open_tickets = tickets.filter(status='Open').count()
-    assigned_tickets = tickets.filter(status='Assigned').count()
-    inprogress_tickets = tickets.filter(status='In Progress').count()
-    resolved_tickets = tickets.filter(status='Resolved').count()
-    closed_tickets = tickets.filter(status='Closed').count()
+    counts = tickets.aggregate(
+        total=Count('id'),
+        open=Count('id', filter=Q(status='Open')),
+        assigned=Count('id', filter=Q(status='Assigned')),
+        inprogress=Count('id', filter=Q(status='In Progress')),
+        resolved=Count('id', filter=Q(status='Resolved')),
+        closed=Count('id', filter=Q(status='Closed')),
+    )
+
+    tickets_values = tickets.values(
+        'id', 'ticket_no', 'full_name', 'department', 'issue_type',
+        'priority', 'status', 'description', 'created_at', 'attachment'
+    )
+    
+    frontend_tickets = []
+    for t in tickets_values:
+        dt = t['created_at']
+        frontend_tickets.append({
+            'id': str(t['ticket_no']),
+            'db_id': str(t['id']),
+            'employee': str(t['full_name']),
+            'date': dt.strftime('%Y-%m-%d') if dt else '',
+            'department': str(t['department']),
+            'issueType': str(t['issue_type']),
+            'description': str(t['description']),
+            'priority': str(t['priority']),
+            'status': str(t['status']),
+            'attachment': str(t["attachment"]).split('/')[-1] if t['attachment'] else "",
+            'attachmentUrl': f'/media/{t["attachment"]}' if t['attachment'] else "",
+        })
+        
+    tickets_json = json.dumps(frontend_tickets)
 
     name_options = FilterNameOption.objects.all()
     departments = DepartmentOption.objects.all()
@@ -90,15 +116,16 @@ def ticket_list(request):
         'tickets/ticket_list.html',
         {
             'tickets': tickets,
+            'tickets_json': tickets_json,
             'name_options': name_options,
             'departments': departments,
             'issue_types': issue_types,
-            'total_tickets': total_tickets,
-            'open_tickets': open_tickets,
-            'assigned_tickets': assigned_tickets,
-            'inprogress_tickets': inprogress_tickets,
-            'resolved_tickets': resolved_tickets,
-            'closed_tickets': closed_tickets,
+            'total_tickets': counts['total'],
+            'open_tickets': counts['open'],
+            'assigned_tickets': counts['assigned'],
+            'inprogress_tickets': counts['inprogress'],
+            'resolved_tickets': counts['resolved'],
+            'closed_tickets': counts['closed'],
         }
     )
 
@@ -152,7 +179,7 @@ def ticket_status(request, pk):
         elif ticket.status == 'Assigned':
             ticket.status = 'In Progress'
         elif ticket.status == 'In Progress':
-            ticket.status = 'Resolved'
+            ticket.status = 'Closed'
         ticket.save()
 
     return redirect('ticket_list')

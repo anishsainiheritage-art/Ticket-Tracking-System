@@ -837,10 +837,7 @@
                                 <input type="text" class="form-control" id="filter_emp_name" placeholder="e.g. John Doe">
                             </div>
 
-                            <div class="col-md-3 col-sm-6">
-                                <label for="filter_mobile" class="form-label">Mobile Number</label>
-                                <input type="text" class="form-control" id="filter_mobile" placeholder="e.g. 9876543210">
-                            </div>
+
 
                             <div class="col-md-3 col-sm-6">
                                 <label for="filter_dept" class="form-label">Department</label>
@@ -934,7 +931,7 @@
                             <tr>
                                 <th class="sortable" id="sort-id" data-col="id">Ticket Number <i class="fas fa-sort"></i></th>
                                 <th class="sortable" id="sort-employee" data-col="employee">Employee Name <i class="fas fa-sort"></i></th>
-                                <th>Mobile</th>
+
                                 <th class="sortable" id="sort-dept" data-col="department">Dept <i class="fas fa-sort"></i></th>
                                 <th class="sortable" id="sort-issue" data-col="issueType">Issue Type <i class="fas fa-sort"></i></th>
                                 <th>Subject</th>
@@ -993,10 +990,7 @@
                             <div class="detail-label">Employee Name</div>
                             <div class="detail-value" id="view-name"></div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Mobile Number</div>
-                            <div class="detail-value" id="view-mobile"></div>
-                        </div>
+
                         <div class="detail-item">
                             <div class="detail-label">Department</div>
                             <div class="detail-value" id="view-dept"></div>
@@ -1066,11 +1060,7 @@
                                 <input type="text" class="form-control" id="edit-name" required>
                                 <div class="invalid-feedback">Employee name is required.</div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="edit-mobile" class="form-label">Mobile Number</label>
-                                <input type="tel" class="form-control" id="edit-mobile" required>
-                                <div class="invalid-feedback">Enter a valid 10-digit mobile number.</div>
-                            </div>
+
                             <div class="col-md-6">
                                 <label for="edit-dept" class="form-label">Department</label>
                                 <select class="form-select" id="edit-dept">
